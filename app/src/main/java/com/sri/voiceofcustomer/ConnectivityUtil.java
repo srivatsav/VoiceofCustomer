@@ -27,7 +27,7 @@ public class ConnectivityUtil extends Application {
     public static String getConnectivityStatusString(Context context) {
         int conn = ConnectivityUtil.getConnectivityStatus(context);
         String status = null;
-        if (conn == ConnectivityUtil.TYPE_NOT_CONNECTED) {
+          if (conn == ConnectivityUtil.TYPE_NOT_CONNECTED) {
             status = "Not connected to Internet. Check your network settings and try again.";
         }
         return status;
