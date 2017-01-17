@@ -17,9 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.*;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.sri.voiceofcustomer.MainActivity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sri.voiceofcustomer.R;
+import com.sri.voiceofcustomer.database.models.User;
+import com.sri.voiceofcustomer.login.LoginActivity;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -82,17 +84,26 @@ public class SignupActivity extends AppCompatActivity {
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(SignupActivity.this,"User Creation "+task.isSuccessful(),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignupActivity.this,"Registration success.Please login to continue.",Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
 
                                 if(!(task.isSuccessful()))
                                 {
                                     Toast.makeText(SignupActivity.this,"User Creation Failed.!"+task.getException(),Toast.LENGTH_SHORT).show();
                                 }
-                                else
+                                else if(task.isSuccessful())
                                 {
-                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+                                    // Creating new user node, which returns the unique key value
+                                    // new user node would be /users/$userid/
+                                    String userId = mDatabase.push().getKey();
+                                    // creating user object
+                                    User user = new User(inputEmail.toString(),"read_only");
+                                    // pushing user to 'users' node using the userId
+                                    mDatabase.child(userId).setValue(user);
                                     finish();
+                                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+
                                 }
                             }
                         });
