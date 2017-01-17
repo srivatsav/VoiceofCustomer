@@ -23,9 +23,11 @@ import com.sri.voiceofcustomer.R;
 import com.sri.voiceofcustomer.database.models.User;
 import com.sri.voiceofcustomer.login.LoginActivity;
 
+import java.math.BigInteger;
+
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText inputEmail, inputPassword, firstName, lastName, contact;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -42,6 +44,9 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
+        firstName = (EditText) findViewById(R.id.firstName);
+        lastName = (EditText) findViewById(R.id.last_name);
+        contact = (EditText) findViewById(R.id.contact);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
 
@@ -63,6 +68,10 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
+                final String fname = firstName.getText().toString().trim();
+                final String lname = lastName.getText().toString().trim();
+                final String cntct = contact.getText().toString().trim();
+
                 if(TextUtils.isEmpty(email))
                 {
                     Toast.makeText(getApplicationContext(),"Enter Email Address!",Toast.LENGTH_SHORT).show();
@@ -71,6 +80,21 @@ public class SignupActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(password))
                 {
                     Toast.makeText(getApplicationContext(),"Enter password !",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(fname))
+                {
+                    Toast.makeText(getApplicationContext(),"Enter first name !",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(lname))
+                {
+                    Toast.makeText(getApplicationContext(),"Enter last name !",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(cntct) || cntct.length()!=10)
+                {
+                    Toast.makeText(getApplicationContext(),"Enter valid contact !",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(password.length()<6)
@@ -98,7 +122,7 @@ public class SignupActivity extends AppCompatActivity {
                                     // new user node would be /users/$userid/
                                     String userId = mDatabase.push().getKey();
                                     // creating user object
-                                    User user = new User(inputEmail.toString(),"read_only");
+                                    User user = new User(inputEmail.toString(),"read_only",fname,lname,cntct);
                                     // pushing user to 'users' node using the userId
                                     mDatabase.child(userId).setValue(user);
                                     finish();
