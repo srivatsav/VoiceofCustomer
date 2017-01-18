@@ -16,6 +16,8 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sri.voiceofcustomer.ConnectivityUtil;
 import com.sri.voiceofcustomer.ConnectivityReceiver;
 import com.sri.voiceofcustomer.R;
@@ -38,6 +40,11 @@ public class DashboardActivity extends AppCompatActivity
                     finish();
                     startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
 
+                }
+                else
+                {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("surveys");
                 }
             }
         };
@@ -94,17 +101,13 @@ public class DashboardActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_create_survey) {
+            // Handle the  action
+        } else if (id == R.id.nav_pull_survey) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_view_survey) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else {
+        }  else {
             if (id == R.id.logout) {
                 FirebaseAuth.getInstance().signOut();// this listener will be called when there is change in firebase user session
 

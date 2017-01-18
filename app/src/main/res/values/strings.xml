@@ -35,5 +35,14 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="contact_number">Contact</string>
+    <string name="category_prompt">Choose a category</string>
 
+
+    <string-array name="category_array">
+        <item>OnTimeDelivery</item>
+        <item>OnBudgetDelivery</item>
+        <item>Risk</item>
+        <item>Governance</item>
+        <item>Quality</item>
+    </string-array>
 </resources>

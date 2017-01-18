@@ -2,35 +2,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+        <item android:title="Survey Options">
+            <menu>
+            <item
+                android:id="@+id/nav_create_survey"
+                android:icon="@drawable/ic_new_survey"
+                android:title="Create New Survey" />
+            <item
+                android:id="@+id/nav_pull_survey"
+                android:icon="@drawable/ic_pull_survey"
+                android:title="Pull a survey" />
+            <item
+                android:id="@+id/nav_view_survey"
+                android:icon="@drawable/ic_view_survey"
+                android:title="View Surveys" />
+            </menu>
+        </item>
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+
+
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_logout"
                 android:title="Logout" />
-        </menu>
-    </item>
+
 
 </menu>

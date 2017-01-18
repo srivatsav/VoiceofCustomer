@@ -1,5 +1,6 @@
 package com.sri.voiceofcustomer.database.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,5 +11,13 @@ import java.util.Map;
 
 public class Questionnare {
 
+    public Questions q ;
 
+    public Questions getQ() {
+        return q;
+    }
+
+    public void setQ(Questions q) {
+        this.q = q;
+    }
 }
