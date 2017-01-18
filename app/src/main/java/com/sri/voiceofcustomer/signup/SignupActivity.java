@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.*;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sri.voiceofcustomer.R;
@@ -104,33 +108,55 @@ public class SignupActivity extends AppCompatActivity {
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
-                auth.createUserWithEmailAndPassword(email,password)
-                        .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(SignupActivity.this,"Registration success.Please login to continue.",Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
 
-                                if(!(task.isSuccessful()))
-                                {
-                                    Toast.makeText(SignupActivity.this,"User Creation Failed.!"+task.getException(),Toast.LENGTH_SHORT).show();
-                                }
-                                else if(task.isSuccessful())
-                                {
-                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
-                                    // Creating new user node, which returns the unique key value
-                                    // new user node would be /users/$userid/
-                                    String userId = mDatabase.push().getKey();
-                                    // creating user object
-                                    User user = new User(email,"read_only",fname,lname,cntct);
-                                    // pushing user to 'users' node using the userId
-                                    mDatabase.child(userId).setValue(user);
-                                    finish();
-                                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
 
-                                }
-                            }
-                        });
+                        auth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                        if (!(task.isSuccessful())) {
+                                            try
+                                            {
+                                                throw task.getException();
+                                            }
+                                            catch(FirebaseAuthUserCollisionException e)
+                                            {
+                                                Toast.makeText(SignupActivity.this, "User Creation Failed.!" + task.getException(), Toast.LENGTH_SHORT).show();
+                                            }
+                                            catch(FirebaseNetworkException e)
+                                            {
+                                                Toast.makeText(SignupActivity.this, "User Creation Failed.!" + task.getException(), Toast.LENGTH_SHORT).show();
+                                            }
+                                            catch(FirebaseAuthWeakPasswordException e)
+                                            {
+                                                Toast.makeText(SignupActivity.this, "User Creation Failed.!" + task.getException(), Toast.LENGTH_SHORT).show();
+                                            }
+                                            catch(Exception e)
+                                            {
+                                                Log.e("Error occured",e.getMessage().toString());
+                                            }
+
+                                        } else if (task.isSuccessful()) {
+
+                                            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+                                            // Creating new user node, which returns the unique key value
+                                            // new user node would be /users/$userid/
+                                            String userId = mDatabase.push().getKey();
+                                            // creating user object
+                                            User user = new User(email, "read_only", fname, lname, cntct);
+                                            // pushing user to 'users' node using the userId
+                                            mDatabase.child(userId).setValue(user);
+                                            Toast.makeText(SignupActivity.this, "Registration success.", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            finish();
+                                            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+
+                                        }
+                                    }
+                                });
+
+
 
             }
         });

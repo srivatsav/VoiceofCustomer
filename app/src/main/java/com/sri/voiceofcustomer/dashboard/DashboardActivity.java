@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,19 +18,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.sri.voiceofcustomer.ConnectivityUtil;
-import com.sri.voiceofcustomer.ConnectivityReceiver;
+
 import com.sri.voiceofcustomer.R;
 import com.sri.voiceofcustomer.login.LoginActivity;
 import com.sri.voiceofcustomer.survey.fragment.SurveyFragment;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private ProgressBar progressBar;
+    private TextView logout_textView;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     @Override
@@ -107,8 +114,9 @@ public class DashboardActivity extends AppCompatActivity
         if (id == R.id.nav_create_survey) {
             // Handle the  action
             newFragment = new SurveyFragment();
+
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.nav_create_survey,newFragment);
+            transaction.replace(R.id.content_dashboard,newFragment);
             transaction.commit();
 
         } else if (id == R.id.nav_pull_survey) {
@@ -117,7 +125,11 @@ public class DashboardActivity extends AppCompatActivity
 
         }  else {
             if (id == R.id.logout) {
-                FirebaseAuth.getInstance().signOut();// this listener will be called when there is change in firebase user session
+
+
+                    FirebaseAuth.getInstance().signOut();// this listener will be called when there is change in firebase user session
+                finish();
+                startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
 
             }
         }

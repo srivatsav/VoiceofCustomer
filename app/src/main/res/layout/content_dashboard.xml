@@ -13,9 +13,5 @@
     tools:context="com.sri.voiceofcustomer.dashboard.DashboardActivity"
     tools:showIn="@layout/app_bar_dashboard">
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
+
 </RelativeLayout>

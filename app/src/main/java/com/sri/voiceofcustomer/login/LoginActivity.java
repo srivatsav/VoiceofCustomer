@@ -2,10 +2,11 @@ package com.sri.voiceofcustomer.login;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,10 +15,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.sri.voiceofcustomer.ConnectivityUtil;
-import com.sri.voiceofcustomer.ConnectivityReceiver;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.sri.voiceofcustomer.R;
 import com.sri.voiceofcustomer.dashboard.DashboardActivity;
 import com.sri.voiceofcustomer.signup.SignupActivity;
@@ -89,29 +90,47 @@ public class LoginActivity extends AppCompatActivity  {
 
                     progressBar.setVisibility(View.VISIBLE);
 
-                    //authenticate user
-                    auth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    // If sign in fails, display a message to the user. If sign in succeeds
-                                    // the auth state listener will be notified and logic to handle the
-                                    // signed in user can be handled in the listener.
-                                    progressBar.setVisibility(View.GONE);
-                                    if (!task.isSuccessful()) {
-                                        // there was an error
-                                        if (password.length() < 6) {
-                                            inputPassword.setError(getString(R.string.minimum_password));
+
+
+                        //authenticate user
+                        auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        // If sign in fails, display a message to the user. If sign in succeeds
+                                        // the auth state listener will be notified and logic to handle the
+                                        // signed in user can be handled in the listener.
+                                        progressBar.setVisibility(View.GONE);
+                                        if (!task.isSuccessful()) {
+                                            // there was an error
+                                            if (password.length() < 6) {
+                                                inputPassword.setError(getString(R.string.minimum_password));
+                                            }
+                                            try{
+                                                throw task.getException();
+                                            }
+                                            catch(FirebaseNetworkException e)
+                                            {
+                                                Toast.makeText(LoginActivity.this, "Please check  your network settings", Toast.LENGTH_LONG).show();
+                                            }
+                                            catch(FirebaseAuthInvalidCredentialsException e)
+                                            {
+                                                Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                            }
+                                            catch(Exception e)
+                                            {
+                                                Log.e("Error while logging in " , e.getMessage().toString());
+                                            }
+
                                         } else {
-                                            Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                            startActivity(intent);
+                                            finish();
                                         }
-                                    } else {
-                                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                                        startActivity(intent);
-                                        finish();
                                     }
-                                }
-                            });
+                                });
+
+
                 }
             });
         }

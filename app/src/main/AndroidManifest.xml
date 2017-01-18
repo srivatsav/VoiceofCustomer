@@ -23,14 +23,7 @@
             android:name=".dashboard.DashboardActivity"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
-        <receiver
-                    android:name=".ConnectivityReceiver"
-                    android:label="ConnectivityReceiver" >
-                    <intent-filter>
-                        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                        <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                    </intent-filter>
-                </receiver>
+
     </application>
 
 </manifest>
