@@ -1,5 +1,7 @@
 package com.sri.voiceofcustomer.dashboard;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +24,7 @@ import com.sri.voiceofcustomer.ConnectivityUtil;
 import com.sri.voiceofcustomer.ConnectivityReceiver;
 import com.sri.voiceofcustomer.R;
 import com.sri.voiceofcustomer.login.LoginActivity;
+import com.sri.voiceofcustomer.survey.fragment.SurveyFragment;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -100,9 +103,14 @@ public class DashboardActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Fragment newFragment=null;
         if (id == R.id.nav_create_survey) {
             // Handle the  action
+            newFragment = new SurveyFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.nav_create_survey,newFragment);
+            transaction.commit();
+
         } else if (id == R.id.nav_pull_survey) {
 
         } else if (id == R.id.nav_view_survey) {

@@ -36,6 +36,8 @@
     <string name="last_name">Last name</string>
     <string name="contact_number">Contact</string>
     <string name="category_prompt">Choose a category</string>
+    <string name="question_desc">Post your question</string>
+    <string name="add_category">Add a category</string>
 
 
     <string-array name="category_array">

@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none" >
+
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -15,7 +25,8 @@
         android:layout_weight="0.03"
         android:layout_marginTop="120dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -31,13 +42,13 @@
         android:id="@+id/editText2"
         android:layout_alignRight="@+id/button3"
         android:layout_alignEnd="@+id/button3"
-        tools:text="Question Description" />
+        android:hint="@string/question_desc" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="@string/add_category"
         android:ems="10"
         android:id="@+id/editText"
         android:layout_above="@+id/editText2"
@@ -48,7 +59,7 @@
         android:layout_marginBottom="48dp" />
 
     <Button
-        android:text="Button"
+        android:text="Add question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText2"
@@ -58,7 +69,7 @@
         android:id="@+id/button4" />
 
     <Button
-        android:text="Button"
+        android:text="Post Survey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/button4"
@@ -67,7 +78,7 @@
         android:id="@+id/button5" />
 
     <Button
-        android:text="Button"
+        android:text="ADD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button3"
@@ -77,4 +88,8 @@
         android:layout_toEndOf="@+id/editText"
         android:layout_marginLeft="11dp"
         android:layout_marginStart="11dp" />
-</RelativeLayout>
+
+
+        </RelativeLayout>
+
+</ScrollView>
