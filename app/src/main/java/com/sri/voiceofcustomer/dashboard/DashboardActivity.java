@@ -106,9 +106,8 @@ public class DashboardActivity extends AppCompatActivity
 
         } else {
             if (id == R.id.logout) {
-                auth.signOut();
-                finish();
-                startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
+                FirebaseAuth.getInstance().signOut();// this listener will be called when there is change in firebase user session
+
             }
         }
 
@@ -121,12 +120,11 @@ public class DashboardActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         // register connection status listener
-        if(auth.getCurrentUser()==null)
-        {
-            finish();
-            startActivity(new Intent(this,LoginActivity.class));
-        }
+
     }
+
+
+
 
    /* @Override
     public void onNetworkConnectionChanged(boolean isConnected) {

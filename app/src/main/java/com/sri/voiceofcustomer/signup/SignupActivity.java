@@ -66,7 +66,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                String email = inputEmail.getText().toString().trim();
+                final String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 final String fname = firstName.getText().toString().trim();
                 final String lname = lastName.getText().toString().trim();
@@ -122,7 +122,7 @@ public class SignupActivity extends AppCompatActivity {
                                     // new user node would be /users/$userid/
                                     String userId = mDatabase.push().getKey();
                                     // creating user object
-                                    User user = new User(inputEmail.toString(),"read_only",fname,lname,cntct);
+                                    User user = new User(email,"read_only",fname,lname,cntct);
                                     // pushing user to 'users' node using the userId
                                     mDatabase.child(userId).setValue(user);
                                     finish();
