@@ -1,116 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ScrollView01"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:scrollbars="none" >
-
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:weightSum="1">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
-        <android.support.v7.widget.FitWindowsLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="1">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:inputType="textAutoCorrect|textAutoComplete|textMultiLine"
+        android:ems="10"
+        android:id="@+id/add_quesions"
+        android:hint="Add Questions"
+        android:layout_marginBottom="32dp"
+        android:layout_above="@+id/survey_submit"
+        android:layout_alignLeft="@+id/category_spinner"
+        android:layout_alignStart="@+id/category_spinner"
+        android:layout_alignRight="@+id/button3"
+        android:layout_alignEnd="@+id/button3" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="249dp"
-                android:layout_marginTop="50dp"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:layout_marginTop="60dp"
-                    android:id="@+id/email"
-                    android:layout_width="249dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@android:color/white"
-                    android:layout_below="@+id/textInputLayout"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-            </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/sign_up_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:layout_marginLeft="10dp"
-                android:background="@color/colorAccent"
-                android:text="Add category"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:layout_below="@+id/textInputLayout2"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginRight="0dp"
-                android:paddingLeft="10dp" />
-        </android.support.v7.widget.FitWindowsLinearLayout>
+    <Button
+        android:id="@+id/survey_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:text="@string/btn_submit"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="26dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/category_spinner"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:entries="@array/category_array"
         android:prompt="@string/category_prompt"
         android:layout_weight="0.03"
-        android:layout_marginTop="120dp"
+        android:layout_below="@+id/textView3"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_marginTop="21dp" />
+
+    <TextView
+        android:text="select Category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/survey_name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/survey_name"
+        android:hint="@string/hint_survey"
+        android:layout_marginTop="18dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3" />
 
+    <TextView
+        android:text="Note: use add category if category is not listed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/category_spinner"
+        android:layout_alignLeft="@+id/category_spinner"
+        android:layout_alignStart="@+id/category_spinner" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:hint="Add Category"
+        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignStart="@+id/textView4"
+        android:layout_marginTop="30dp"
+        android:layout_toLeftOf="@+id/button3"
+        android:layout_toStartOf="@+id/button3" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="200dp"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/post_q"
-                style="?android:textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               android:layout_gravity="right"
-                android:layout_marginLeft="10dp"
-                android:background="@color/colorAccent"
-                android:text="Post question"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="10dp" />
-
-            <EditText
-                android:layout_marginTop="60dp"
-                android:id="@+id/q_email"
-                android:layout_width="match_parent"
-                android:layout_height="126dp"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:maxLines="20"
-                android:singleLine="true"
-                android:textColor="@android:color/white"
-                android:layout_below="@+id/textInputLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-        </android.support.design.widget.TextInputLayout>
-
+    <Button
+        android:text="Add"
+        android:layout_height="wrap_content"
+        android:id="@+id/button3"
+        android:background="@color/colorAccent"
+        android:layout_width="120dp"
+        android:layout_alignBottom="@+id/editText"
+        android:layout_toRightOf="@+id/category_spinner"
+        android:layout_toEndOf="@+id/category_spinner" />
 
 </RelativeLayout>
-
-</ScrollView>
