@@ -5,11 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.TextureView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,10 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import com.sri.voiceofcustomer.R;
 import com.sri.voiceofcustomer.login.LoginActivity;
-import com.sri.voiceofcustomer.survey.fragment.SurveyFragment;
+import com.sri.voiceofcustomer.survey.fragment.admin.CreateSurveyFragment;
+import com.sri.voiceofcustomer.survey.fragment.admin.InProgressSurvey;
+import com.sri.voiceofcustomer.survey.fragment.admin.NewSurveyFragment;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,6 +69,8 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -113,17 +113,35 @@ public class DashboardActivity extends AppCompatActivity
         Fragment newFragment=null;
         if (id == R.id.nav_create_survey) {
             // Handle the  action
-            newFragment = new SurveyFragment();
-
+            newFragment = new CreateSurveyFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.content_dashboard,newFragment);
             transaction.commit();
 
         } else if (id == R.id.nav_pull_survey) {
 
-        } else if (id == R.id.nav_view_survey) {
 
-        }  else {
+            newFragment = new NewSurveyFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_dashboard,newFragment);
+            transaction.commit();
+
+        } else if (id == R.id.nav_inprogress_survey) {
+
+            /*newFragment = new InProgressSurvey();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_dashboard,newFragment);
+            transaction.commit();*/
+
+        }
+
+
+           /* newFragment = new InProgressSurvey();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_dashboard,newFragment);
+            transaction.commit();*/
+
+         else {
             if (id == R.id.logout) {
 
 
