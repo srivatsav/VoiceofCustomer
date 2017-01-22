@@ -18,6 +18,7 @@ public class User {
     public String firstName;
     public String lastName;
     public String contact;
+    public String company;
 
     public User(String email,String role,String firstName,String lastName,String contact) {
         this.email = email;
@@ -25,5 +26,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.contact = contact;
+
     }
 }

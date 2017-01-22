@@ -19,6 +19,8 @@ import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sri.voiceofcustomer.R;
 import com.sri.voiceofcustomer.dashboard.DashboardActivity;
 import com.sri.voiceofcustomer.signup.SignupActivity;
@@ -75,7 +77,7 @@ public class LoginActivity extends AppCompatActivity  {
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String email = inputEmail.getText().toString();
+                    final String email = inputEmail.getText().toString();
                     final String password = inputPassword.getText().toString();
 
                     if (TextUtils.isEmpty(email)) {
@@ -124,6 +126,13 @@ public class LoginActivity extends AppCompatActivity  {
 
                                         } else {
                                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                            if(email.startsWith("srivatsav809"))
+                                            {
+                                                intent.putExtra("isCustomer",false);
+                                            }
+                                            else
+                                                intent.putExtra("isCustomer",true);
+
                                             startActivity(intent);
                                             finish();
                                         }

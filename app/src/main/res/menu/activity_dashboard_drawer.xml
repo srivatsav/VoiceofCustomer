@@ -21,6 +21,9 @@
                     android:id="@+id/nav_completed_survey"
                     android:icon="@drawable/ic_view_survey"
                     android:title="Completed surveys" />
+                <item
+                    android:id="@+id/statistics"
+                    android:title="View stats" />
 
 
             </menu>

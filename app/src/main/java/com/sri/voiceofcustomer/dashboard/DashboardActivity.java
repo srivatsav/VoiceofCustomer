@@ -5,47 +5,82 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.TextureView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.ValueEventListener;
 import com.sri.voiceofcustomer.R;
+import com.sri.voiceofcustomer.database.models.User;
 import com.sri.voiceofcustomer.login.LoginActivity;
-import com.sri.voiceofcustomer.survey.fragment.Inprogress;
-import com.sri.voiceofcustomer.survey.fragment.SurveyFragment;
+import com.sri.voiceofcustomer.survey.fragment.admin.CreateSurveyFragment;
+import com.sri.voiceofcustomer.survey.fragment.admin.InProgressSurvey;
 import com.sri.voiceofcustomer.survey.fragment.admin.NewSurveyFragment;
+import com.sri.voiceofcustomer.survey.fragment.admin.StatsFragment;
+
+
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private ProgressBar progressBar;
     private TextView logout_textView;
     private FirebaseAuth.AuthStateListener authListener;
+    /*private DatabaseReference mDatabase;
+    private FirebaseUser user;
     private FirebaseAuth auth;
+    private User authUser = new User();*/
+    boolean isCustomer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*mDatabase = FirebaseDatabase.getInstance().getReference("userdetail");
+        user = auth.getInstance().getCurrentUser();
+        Log.d("Email Id of user",user.getEmail());
+        int keyIndex = user.getEmail().indexOf('@');
+        String keyId = user.getEmail().substring(0,keyIndex);
+        mDatabase.child(keyId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                authUser = dataSnapshot.getValue(User.class);
+
+                if(authUser!=null)
+                {
+                    Log.d("ROLE",authUser.role);
+                    String role = authUser.role;
+                    if(role.equals("customer"))
+                        isCustomer=true;
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        */
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user == null) {
                     // user auth state is changed - user is null
                     // launch login activity
@@ -73,6 +108,19 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        isCustomer=getIntent().getBooleanExtra("isCustomer",false);
+        if(isCustomer) {
+            Menu menu = navigationView.getMenu();
+            MenuItem menuItem = menu.findItem(R.id.nav_create_survey);
+            menuItem.setVisible(false);
+        }
+        Fragment defaultFragment = new StatsFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_dashboard,defaultFragment);
+        transaction.commit();
+
+
     }
 
     @Override
@@ -115,35 +163,38 @@ public class DashboardActivity extends AppCompatActivity
         Fragment newFragment=null;
         if (id == R.id.nav_create_survey) {
             // Handle the  action
-            newFragment = new SurveyFragment();
-
+            newFragment = new CreateSurveyFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.content_dashboard,newFragment);
             transaction.commit();
 
         } else if (id == R.id.nav_new_survey) {
-
-
-            newFragment = new NewSurveyFragment();
-
+            if(isCustomer)
+            {
+                newFragment = new NewSurveyFragment();
+            }else{
+                newFragment = new NewSurveyFragment();
+            }
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.content_dashboard,newFragment);
             transaction.commit();
 
-        }
-        else if (id == R.id.nav_inprogress_survey) {
+        } else if (id == R.id.nav_inprogress_survey) {
 
+            /*newFragment = new InProgressSurvey();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_dashboard,newFragment);
+            transaction.commit();*/
 
-            newFragment = new Inprogress();
-
+        } else if (id == R.id.statistics) {
+            newFragment = new StatsFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.content_dashboard,newFragment);
             transaction.commit();
-
         }
-        else {
+
+         else {
             if (id == R.id.logout) {
-
 
                     FirebaseAuth.getInstance().signOut();// this listener will be called when there is change in firebase user session
                 finish();

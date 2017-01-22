@@ -31,8 +31,8 @@ import java.math.BigInteger;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword, firstName, lastName, contact;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
+    private EditText inputEmail, inputPassword, firstName, lastName, contact,userCompany,userName;
+    private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
 
@@ -51,15 +51,9 @@ public class SignupActivity extends AppCompatActivity {
         firstName = (EditText) findViewById(R.id.firstName);
         lastName = (EditText) findViewById(R.id.last_name);
         contact = (EditText) findViewById(R.id.contact);
+        userCompany= (EditText) findViewById(R.id.company);
+        userName = (EditText) findViewById(R.id.username);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
-
-        btnResetPassword.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                //startActivity(new Intent(SignupActivity.this, ResetPasswordActivity.class));
-            }
-        });
 
         btnSignIn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -71,14 +65,21 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                final String password = inputPassword.getText().toString().trim();
                 final String fname = firstName.getText().toString().trim();
                 final String lname = lastName.getText().toString().trim();
                 final String cntct = contact.getText().toString().trim();
+                final String company = userCompany.getText().toString().trim();
+                final String username = userName.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email))
                 {
                     Toast.makeText(getApplicationContext(),"Enter Email Address!",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(username))
+                {
+                    Toast.makeText(getApplicationContext(),"Enter Username!",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(TextUtils.isEmpty(password))
@@ -109,7 +110,6 @@ public class SignupActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-
                         auth.createUserWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                                     @Override
@@ -122,35 +122,44 @@ public class SignupActivity extends AppCompatActivity {
                                             }
                                             catch(FirebaseAuthUserCollisionException e)
                                             {
-                                                Toast.makeText(SignupActivity.this, "User Creation Failed.!" + task.getException(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SignupActivity.this, "Email already registered", Toast.LENGTH_SHORT).show();
                                             }
                                             catch(FirebaseNetworkException e)
                                             {
-                                                Toast.makeText(SignupActivity.this, "User Creation Failed.!" + task.getException(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SignupActivity.this, "Chect your network and retry", Toast.LENGTH_SHORT).show();
                                             }
                                             catch(FirebaseAuthWeakPasswordException e)
                                             {
-                                                Toast.makeText(SignupActivity.this, "User Creation Failed.!" + task.getException(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SignupActivity.this, "Password is too weak.", Toast.LENGTH_SHORT).show();
                                             }
                                             catch(Exception e)
                                             {
                                                 Log.e("Error occured",e.getMessage().toString());
                                             }
+                                            progressBar.setVisibility(View.GONE);
 
                                         } else if (task.isSuccessful()) {
 
                                             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
                                             // Creating new user node, which returns the unique key value
                                             // new user node would be /users/$userid/
-                                            String userId = mDatabase.push().getKey();
+                                            //String userId = mDatabase.push().getKey();
                                             // creating user object
-                                            User user = new User(email, "read_only", fname, lname, cntct);
+                                            User user = new User(email, "customer", fname, lname, cntct);
                                             // pushing user to 'users' node using the userId
-                                            mDatabase.child(userId).setValue(user);
+                                            mDatabase.child(company).push().setValue(user);
+
+                                            mDatabase = FirebaseDatabase.getInstance().getReference("userdetail");
+                                            int keyIndex = email.indexOf('@');
+                                            String keyId = email.substring(0,keyIndex);
+                                            mDatabase.child(keyId).setValue(user);
+
                                             Toast.makeText(SignupActivity.this, "Registration success.", Toast.LENGTH_SHORT).show();
                                             progressBar.setVisibility(View.GONE);
                                             finish();
-                                            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                                            Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
+                                            intent.putExtra("isCustomer",true);
+                                            startActivity(intent);
 
                                         }
                                     }

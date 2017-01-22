@@ -13,5 +13,4 @@
     tools:context="com.sri.voiceofcustomer.dashboard.DashboardActivity"
     tools:showIn="@layout/app_bar_dashboard">
 
-
 </RelativeLayout>
